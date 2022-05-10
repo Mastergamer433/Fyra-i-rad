@@ -1,14 +1,29 @@
 # Imports
 import socket
 import threading
+import sys
+from typing import List
 
 # Variables
 PORT = 5673
-SERVER = "192.168.21.38"
+SERVER = "172.20.10.8" 
 ADDR =  (SERVER, PORT)
 HEADER = 64
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = '!^DISCONNECT'
+
+args: List[str] = sys.argv
+
+argsRan = 0
+
+for i in args: 
+    if i == "--port":
+        PORT = int(args[argsRan+1])
+    if i == "--ip":
+        SERVER = str(args[argsRan+1])
+        SERVER+=""
+    argsRan+=1
+print(type(SERVER))
 
 sockets = []
 

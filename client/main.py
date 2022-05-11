@@ -8,10 +8,15 @@ from logger import *
 
 WIDTH, HEIGHT = 700, 700  
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
-
- 
+clock=pygame.time.Clock()
+active=True
 def main():
+    password=""
+    username=""
+     
     done = False
+    rect = pygame.Rect(0,0,50,50)
+    vel = 2
     ClientThread = threading.Thread(target=netInit, args=())
     while done != True:
         # Varje sekund kör:
@@ -29,8 +34,19 @@ def main():
             log(event, "EVENT")
             if event.type == pygame.QUIT:
                 done = True
-
-        endTime = time.time()
+            elif event.type == 771:
+                if active:
+                    username+=event.text
+            elif event.type == 768:
+                if event.key == 13:
+                    print(username)
+        
+        WIN.fill((255,255,255)) 
+        pygame.draw.rect(WIN, (255,210,20), rect)
+        
+         
+        pygame.display.flip()
+        clock.tick(60)
     pygame.quit()
 
 if __name__ == "__main__":

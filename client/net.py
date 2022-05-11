@@ -21,7 +21,8 @@ def netSend(msg):
     send_length += b' ' * (HEADER - len(send_length))
     client.send(send_length)
     client.send(message)  
-
+def log(msg, f):
+    print("["+f+"] "+msg)
 def netReceive():
     msg_length = client.recv(HEADER).decode(FORMAT)
     msg_length=int(msg_length)

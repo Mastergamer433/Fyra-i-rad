@@ -2,15 +2,17 @@ import pygame
 import numpy as np
 import threading
 import time
+import os
 from  net import *
+from logger import *
 
-WIDTH, HEIGHT = 300, 300
+WIDTH, HEIGHT = 700, 700  
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 
  
 def main():
     done = False
-    netInit()
+    ClientThread = threading.Thread(target=netInit, args=())
     while done != True:
         # Varje sekund kör:
         # netSend(UP_MESSAGE)
@@ -24,7 +26,7 @@ def main():
         #   tryTimes+=1
         startTime = time.time()
         for event in pygame.event.get():
-            print(event)
+            log(event, "EVENT")
             if event.type == pygame.QUIT:
                 done = True
 

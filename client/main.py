@@ -1,24 +1,12 @@
 import pygame
-import numpy as np
-import threading
-import time
-import os
-from  net import *
-from logger import *
+from gameInfo import GameInfo
 
-WIDTH, HEIGHT = 700, 700  
-WIN = pygame.display.set_mode((WIDTH, HEIGHT))
-clock=pygame.time.Clock()
-active=True
+
 def main():
-    password=""
-    username=""
-     
+    """The main function"""
     done = False
-    rect = pygame.Rect(0,0,50,50)
-    vel = 2
-    ClientThread = threading.Thread(target=netInit, args=())
-    while done != True:
+    game_info = GameInfo(630, 630)
+    while not done:
         # Varje sekund kör:
         # netSend(UP_MESSAGE)
         # tryTimes=0
@@ -29,25 +17,24 @@ def main():
         #       break;
         #   netSend(UP_MESSAGE)
         #   tryTimes+=1
-        startTime = time.time()
         for event in pygame.event.get():
-            log(event, "EVENT")
             if event.type == pygame.QUIT:
                 done = True
-            elif event.type == 771:
-                if active:
-                    username+=event.text
-            elif event.type == 768:
-                if event.key == 13:
-                    print(username)
-        
-        WIN.fill((255,255,255)) 
-        pygame.draw.rect(WIN, (255,210,20), rect)
-        
-         
+        game_info.WIN.fill((255, 255, 255))
+        pygame.draw.rect(
+            game_info.WIN,
+            (0, 0, 255),
+            pygame.Rect(
+                0,
+                game_info.circleSizeHeight,
+                game_info.WIDTH,
+            )
+        )
+        game_info.WIN.blit(game_info.board, (0, game_info.circleSizeHeight))
         pygame.display.flip()
-        clock.tick(60)
+        game_info.clock.tick(60)
     pygame.quit()
+
 
 if __name__ == "__main__":
     main()

@@ -14,18 +14,27 @@ class Net:
     def __init__():
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client.connect(ADDR)
+    
+    
+    def login(username, password):
+        send(f"U: {username}\nP: {password}", "Login")
+        res = receive()
+        if res == "0":
+            return 0
+        else:
+            return 1
 
 
     def disconnect():
         send(DISCONNECT_MESSAGE)
 
 
-    def send(msg):
+    def send(msg, Type)
         message = msg.encode(FORMAT)
         msg_length = len(message)
-        send_length = str(msg_length).encode(FORMAT)
-        send_length += b' ' * (HEADER - len(send_length))
-        client.send(send_length)
+        send_header = f"L: {str(msg_length).encode(FORMAT)}\nT: {Type}"
+        send_header += b' ' * (HEADER - len(send_length))
+        client.send(send_header)
         client.send(message)
 
 

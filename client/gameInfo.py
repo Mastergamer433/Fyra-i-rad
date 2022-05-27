@@ -1,4 +1,5 @@
 import pygame, sys, os
+from net import Net
 
 class GameInfo:
     def __init__(self, width, height):
@@ -6,6 +7,7 @@ class GameInfo:
         self.HEIGHT = height
         self.done = False
         self.WIN = pygame.display.set_mode((width, height))
+        self.net = Net()
         self.circleSizeHeight = height/7
         self.circleSizeWidth = width/7
         self.clock = pygame.time.Clock()

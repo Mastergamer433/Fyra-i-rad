@@ -2,16 +2,18 @@
 import socket
 import threading
 import sys
+import time
 from typing import List
-
+from pymongo import MongoClient
 # Variables
 PORT = 5673
-SERVER = "172.20.10.8" 
+SERVER = "100.72.170.131" 
 ADDR =  (SERVER, PORT)
 HEADER = 64
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = '!^DISCONNECT'
-
+mongoClient = MongoClient("mongodb+srv://FyraIRad:bulle@cluster0.ovpuk.mongodb.net/?retryWrites=true&w=majority")
+db=mongoClient.FyraIRad
 args: List[str] = sys.argv
 
 argsRan = 0
@@ -24,7 +26,7 @@ for i in args:
         SERVER+=""
     argsRan+=1
 print(type(SERVER))
-
+PORT = int(PORT)
 sockets = []
 
 # Create server socket
@@ -50,13 +52,24 @@ def handleClient(conn, addr):
     # While the client is connected
     while connected:
         # Get the header header message
-        msg_length = conn.recv(HEADER).decode(FORMAT)
-        if msg_length:
-            # Make the header message into an int
-            msg_length = int(msg_length)
+        msg_header = conn.recv(HEADER).decode(FORMAT)
+        if msg_header:
+            # Make the length of hte message into an int
+            msg_length = int(msg_header.split("\n")[0])
+            # Check which type it is
+            msg_type = msg_header.split("\n")[1]
             # Get the message
             msg = conn.recv(msg_length).decode(FORMAT)
-            send(msg, conn)
+            if msg_type == "Login":
+                user = db.FyraIRad.find_one({username:msg.split("\n")[0]})                
+                #if user.password == msg.split("\n")[1]:
+                #    send("0",conn)
+                #else:
+                #    send("1",conn)
+                if "Hej" == str(msg.split("\n")[0]) and "Hello" == str(msg.split("\n")[1]):
+                    send("0", conn)
+                else:
+                    send("1", conn)
             # Print that the message was received
             print("[Client {}] {}".format(addr, msg))
             # If the message is the disconnect message
@@ -69,9 +82,9 @@ def handleClient(conn, addr):
     sockets.remove(conn)
     # Close the socket
     conn.close()
-    
-# Start function
-def start():
+
+
+def startServer():
     # Start listening for connections
     server.listen()
     # Print that the server started
@@ -96,9 +109,27 @@ def start():
         print("[SERVER] Handle thread starting.")
         # Start the thread
         thread.start()
-# Print that the server is starting to start
-print("[SERVER] Server starting beginning on address: {} and port: {}.".format(SERVER, PORT))
-# Print that the server is starting
-print("[SERVER] Starting...")
+
+
+def commandInput():
+    while True:
+        command = input("> ")
+        if command == "stop":
+            print("[SERVER] Stopping.")
+            #broadcast("!STOP!")
+            time.sleep(5)
+            server.shutdown(socket.SHUT_RDWR)
+            server.close()
+            break
+
+
+# Start function
+def start():
+    thread = threading.Thread(target=startServer, args=())
+    thread.start()
+    commandThread = threading.Thread(target=commandInput, args=())
+    commandThread.start()
+print("[SERVER] Server beginning to perform the starting sequence.")
+print("[SERVER] Starting on address: {} and port: {}...".format(SERVER, PORT))
 # Start the server
 start()

@@ -22,6 +22,18 @@ def loginEvent(event, game_info):
         if game_info.usernameFeild.collidepoint(event.pos):
             game_info.userFieldActive = True
             game_info.passFieldActive = False
+        if game_info.login_button.collidepoint(event.pos):
+            res = game_info.netThread.getNet().login(game_info.username, game_info.password) 
+            print(type(res))
+            print(res)
+            if res == "1":
+                username = ""
+                password = ""
+            elif res == "0":
+                game_info.view = "Game"
+                game_info.password = ""
+
+
 def loginDraw(game_info):
     pygame.draw.rect(
         game_info.WIN,
@@ -34,33 +46,47 @@ def loginDraw(game_info):
         )
     )
     game_info.usernameFeild = pygame.Rect(
-            game_info.CENTER_X - (game_info.TEXT_FEILD_WIDTH / 2),
-            game_info.CENTER_Y - (game_info.TEXT_FEILD_HEIGHT * 1.5),
-            game_info.TEXT_FEILD_WIDTH,
-            game_info.TEXT_FEILD_HEIGHT
-        ) 
+        game_info.CENTER_X - (game_info.TEXT_FEILD_WIDTH / 2),
+        game_info.CENTER_Y - (game_info.TEXT_FEILD_HEIGHT * 2.5),
+        game_info.TEXT_FEILD_WIDTH,
+        game_info.TEXT_FEILD_HEIGHT
+    ) 
     pygame.draw.rect(
         game_info.WIN,
         (255, 255, 255),
         game_info.usernameFeild
+    ) 
+    game_info.login_button = pygame.Rect(
+        game_info.CENTER_X - (game_info.TEXT_FEILD_WIDTH / 2),
+        game_info.CENTER_Y + (game_info.TEXT_FEILD_HEIGHT*1.5),
+        game_info.TEXT_FEILD_WIDTH,
+        game_info.TEXT_FEILD_HEIGHT
+    )
+    pygame.draw.rect(
+        game_info.WIN,
+        (20,200,20),
+        game_info.login_button
     )
     if game_info.username == "":
-        UsernameText = game_info.loginFont.render("Username", False, (90, 90, 91))
-        UsernameTextRect = UsernameText.get_rect(center=(game_info.WIDTH/2, (game_info.HEIGHT/2)-(game_info.TEXT_FEILD_HEIGHT)))
+        UsernameText     = game_info.loginFont.render("Username", False, (90, 90, 91))
+        UsernameTextRect = UsernameText.get_rect(center=(game_info.WIDTH/2, (game_info.HEIGHT/2)-(game_info.TEXT_FEILD_HEIGHT*2)))
     else:
-        UsernameText = game_info.loginFont.render(game_info.username, False, (90, 90, 91))
-        UsernameTextRect = UsernameText.get_rect(center=(game_info.WIDTH/2, (game_info.HEIGHT/2)-(game_info.TEXT_FEILD_HEIGHT)))
+        UsernameText     = game_info.loginFont.render(game_info.username, False, (90, 90, 91))
+        UsernameTextRect = UsernameText.get_rect(center=(game_info.WIDTH/2, (game_info.HEIGHT/2)-(game_info.TEXT_FEILD_HEIGHT*2)))
 
     if game_info.password == "":
-        PasswordText = game_info.loginFont.render("Password", False, (90, 90, 91))
-        PasswordTextRect = PasswordText.get_rect(center=(game_info.WIDTH/2, (game_info.HEIGHT/2)+((game_info.TEXT_FEILD_HEIGHT)*1.5)))
+        PasswordText     = game_info.loginFont.render("Password", False, (90, 90, 91))
+        PasswordTextRect = PasswordText.get_rect(center=(game_info.WIDTH/2, (game_info.HEIGHT/2)))
     else:
-        PasswordText = game_info.loginFont.render(game_info.password, False, (90, 90, 91))
-        PasswordTextRect = PasswordText.get_rect(center=(game_info.WIDTH/2, (game_info.HEIGHT/2)+((game_info.TEXT_FEILD_HEIGHT)*1.5)))
-        
+        PasswordText     = game_info.loginFont.render(game_info.password, False, (90, 90, 91))
+        PasswordTextRect = PasswordText.get_rect(center=(game_info.WIDTH/2, (game_info.HEIGHT/2)))
+    
+    loginButtonText      = game_info.loginFont.render("Login", False, (0, 0, 0))
+    loginButtonTextRect  = loginButtonText.get_rect(center=(game_info.WIDTH/2, (game_info.HEIGHT/2)+((game_info.TEXT_FEILD_HEIGHT)*2))) 
+
     game_info.passwordFeild = pygame.Rect(
             game_info.CENTER_X - (game_info.TEXT_FEILD_WIDTH / 2),
-            game_info.CENTER_Y + (game_info.TEXT_FEILD_HEIGHT),
+            game_info.CENTER_Y - (game_info.TEXT_FEILD_HEIGHT*0.5),
             game_info.TEXT_FEILD_WIDTH,
             game_info.TEXT_FEILD_HEIGHT
         ) 
@@ -73,4 +99,4 @@ def loginDraw(game_info):
         game_info.WIN.blit(UsernameText, UsernameTextRect)
     if not game_info.passFieldActive:
         game_info.WIN.blit(PasswordText, PasswordTextRect)
-
+    game_info.WIN.blit(loginButtonText, loginButtonTextRect)

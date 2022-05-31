@@ -1,5 +1,5 @@
 import pygame, sys, os
-
+from threads import NetThread
 class GameInfo:
     def __init__(self, width, height):
         self.WIDTH = width
@@ -20,3 +20,5 @@ class GameInfo:
         self.passFieldActive = False
         self.username = ""
         self.password = ""
+        self.netThread = NetThread();
+        self.netThread.start()

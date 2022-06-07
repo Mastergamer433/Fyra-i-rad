@@ -2,13 +2,14 @@ import pygame
 def loginEvent(event, game_info):
     if event.type == 768:
         if event.key == 13: 
-            #if game_info.net.login(username, password) == 0:
-            #    password = ""
-            #    username = ""
-            #else:
-            #    print(game_info.username)
-            #    print(game_info.password)
-            #    game_info.view = "Game" 
+            if game_info.net.login(username, password) == 0:
+                print(game_info.username)
+                print(game_info.password)
+                game_info.view = "Game"  
+            else:
+                password = ""
+                username = ""
+
             print("")
         else:
             if game_info.userFieldActive:
@@ -22,6 +23,7 @@ def loginEvent(event, game_info):
         if game_info.usernameFeild.collidepoint(event.pos):
             game_info.userFieldActive = True
             game_info.passFieldActive = False
+<<<<<<< HEAD
         if game_info.login_button.collidepoint(event.pos):
             res = game_info.netThread.getNet().login(game_info.username, game_info.password) 
             print(type(res))
@@ -32,6 +34,8 @@ def loginEvent(event, game_info):
             elif res == "0":
                 game_info.view = "Game"
                 game_info.password = ""
+=======
+>>>>>>> 06505bee6c1fd2105a4acf76c38977527d233bd5
 
 
 def loginDraw(game_info):

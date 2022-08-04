@@ -38,7 +38,7 @@ Vi lärde oss att hantera frustrationen som uppstod när koden inte fungerade. D
 
 - Testköra koden oftare, särskilt när lite större och mer komplicerad kod implementeras.
 
-- Skriva en pjoektplan från början, där projektets olika delar planeras tillsammans. Denna plan skrivs innan kodningen börjar.
+- Skriva en projektplan från början, där projektets olika delar planeras tillsammans. Denna plan skrivs innan kodningen börjar.
 
 
 
